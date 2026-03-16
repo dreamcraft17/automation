@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DocumentAnalyzingScreen } from "@/components/documents/analyzing-screen";
 
 export default async function DocumentDetailPage({
   params,
@@ -25,6 +25,16 @@ export default async function DocumentDetailPage({
   });
 
   if (!doc) notFound();
+
+  const isAnalyzing =
+    doc.status === "Processing" || (doc.status === "Uploaded" && !doc.analysis);
+  if (isAnalyzing) {
+    return (
+      <div className="p-6 md:p-8">
+        <DocumentAnalyzingScreen documentId={doc.id} title={doc.title} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-8">
