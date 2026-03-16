@@ -1,10 +1,9 @@
-import pg from "pg";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient; prismaPool?: pg.Pool };
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-// Railway pakai cert self-signed: biarkan Node terima (hanya saat DATABASE_URL = Railway)
+// Railway: cert self-signed + opsi SSL (hanya saat DATABASE_URL = Railway)
 if (typeof process !== "undefined" && process.env.DATABASE_URL?.includes("rlwy.net")) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
@@ -19,17 +18,10 @@ function createPrismaClient() {
     ? url.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?&/, "?").replace(/\?$/, "")
     : url;
 
-  const pool =
-    globalForPrisma.prismaPool ??
-    new pg.Pool({
-      connectionString,
-      ssl: isRailway ? { rejectUnauthorized: false } : undefined,
-    });
-  if (process.env.NODE_ENV !== "production") {
-    globalForPrisma.prismaPool = pool;
-  }
-
-  const adapter = new PrismaPg(pool);
+  const adapter = new PrismaPg({
+    connectionString,
+    ssl: isRailway ? { rejectUnauthorized: false } : undefined,
+  });
   return new PrismaClient({ adapter });
 }
 
