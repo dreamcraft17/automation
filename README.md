@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InsightFlow — AI Document Operations Platform
 
-## Getting Started
+Platform berbasis AI untuk membantu tim operasional memproses dokumen secara lebih cepat dan terstruktur: upload, ringkasan otomatis, klasifikasi, pencarian, dan workflow automation.
 
-First, run the development server:
+**Stack:** Next.js 16, TypeScript, Tailwind CSS, Prisma 7 (PostgreSQL), Clerk, UploadThing, OpenAI, shadcn-style UI.
+
+---
+
+## Setup
+
+### 1. Environment
+
+```bash
+cp .env.example .env
+```
+
+Isi `.env`:
+
+- **DATABASE_URL** — PostgreSQL. Bisa pakai **Railway** (tanpa Supabase), Supabase, atau Neon.  
+  - **Railway:** buat project → New → Database → PostgreSQL → di tab Variables copy **Postgres Connection URL** (bentuk `postgresql://...`).  
+  Contoh: `postgresql://user:pass@host:5432/db?sslmode=require`
+- **NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY** & **CLERK_SECRET_KEY** — dari [Clerk Dashboard](https://dashboard.clerk.com)
+- **UPLOADTHING_SECRET** & **UPLOADTHING_APP_ID** — dari [UploadThing](https://uploadthing.com)
+- **OPENAI_API_KEY** — untuk ringkasan & klasifikasi (opsional; tanpa ini dipakai placeholder)
+
+### 2. Database
+
+```bash
+npm run db:generate
+npm run db:push
+npm run db:seed   # dummy documents & workflow rules
+```
+
+### 3. Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000). Sign up/sign in via Clerk, lalu akses Dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Fitur
 
-## Learn More
+- **Auth & roles** — Clerk; role Admin / Analyst / Reviewer (simpan di DB)
+- **Upload** — PDF & DOCX via UploadThing; metadata & status (Uploaded → Processing → Analyzed)
+- **AI analysis** — ringkasan, key insights, kategori, suggested action (OpenAI; fallback placeholder)
+- **Documents** — tabel dengan search (judul/kategori), filter kategori & status, sort terbaru
+- **Document detail** — metadata, AI summary, key insights, classification, timeline/activity
+- **Workflows** — daftar rules (trigger, condition, action)
+- **Dashboard** — total docs, processed, flagged, by category, recent activity
+- **Settings** — info user & role
+- **Activity log** — uploaded, processed, dll.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Script        | Deskripsi              |
+|---------------|------------------------|
+| `npm run dev` | Dev server             |
+| `npm run build` | Production build     |
+| `npm run start` | Jalankan production |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:push` | Push schema ke DB   |
+| `npm run db:seed` | Seed data dummy    |
+| `npm run db:studio` | Prisma Studio     |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy (Vercel)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Import repo, set env (DATABASE_URL, Clerk, UploadThing, OpenAI).
+2. Deploy. Pastikan database sudah di-push (`db:push` atau migrations) dan seed jika perlu.
+
+---
+
+*AI-powered document operations platform for automating document review, classification, search, and workflow routing in enterprise teams.*

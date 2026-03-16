@@ -1,63 +1,91 @@
-import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import { Button } from "@/components/ui/button";
+import { FileText, Sparkles, Shield, Zap } from "lucide-react";
 
-export default function Home() {
+export default async function LandingPage() {
+  const { userId } = await auth();
+  if (userId) redirect("/dashboard");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-white dark:bg-slate-950">
+      <header className="border-b border-slate-200 dark:border-slate-800">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+          <span className="text-xl font-semibold text-slate-900 dark:text-slate-50">
+            InsightFlow
+          </span>
+          <div className="flex items-center gap-4">
+            <Link href="/sign-in">
+              <Button variant="ghost">Sign in</Button>
+            </Link>
+            <Link href="/sign-up">
+              <Button>Get started</Button>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-4 py-24">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-5xl">
+            AI-powered document operations for your team
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+            Upload, classify, and automate document review with AI summaries,
+            workflow rules, and analytics — built for enterprise.
+          </p>
+          <div className="mt-10 flex justify-center gap-4">
+            <Link href="/sign-up">
+              <Button size="lg" className="gap-2">
+                <Sparkles className="h-4 w-4" />
+                Start free
+              </Button>
+            </Link>
+            <Link href="/sign-in">
+              <Button size="lg" variant="outline">
+                Sign in
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-24 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              icon: FileText,
+              title: "Document processing",
+              desc: "Upload PDF & DOCX, get instant AI summaries and key insights.",
+            },
+            {
+              icon: Sparkles,
+              title: "AI analysis",
+              desc: "Automatic classification, suggested actions, and confidence scores.",
+            },
+            {
+              icon: Zap,
+              title: "Workflow automation",
+              desc: "Rules-based routing: review queues, flags, and next steps.",
+            },
+            {
+              icon: Shield,
+              title: "Audit trail",
+              desc: "Activity logs and role-based access for compliance.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-xl border border-slate-200 bg-slate-50/50 p-6 dark:border-slate-800 dark:bg-slate-900/50"
+            >
+              <item.icon className="h-8 w-8 text-slate-700 dark:text-slate-300" />
+              <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-50">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </main>
     </div>

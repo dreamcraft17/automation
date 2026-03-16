@@ -1,0 +1,85 @@
+// InsightFlow - AI Document Operations Platform
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  Admin
+  Analyst
+  Reviewer
+}
+
+enum DocumentStatus {
+  Uploaded
+  Processing
+  Analyzed
+  InReview
+  Flagged
+  Archived
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  name      String
+  email     String   @unique
+  role      Role     @default(Analyst)
+  createdAt DateTime @default(now())
+
+  documentsUploaded Document[]      @relation("UploadedBy")
+  activityLogs      ActivityLog[]
+}
+
+model Document {
+  id         String         @id @default(cuid())
+  title      String
+  fileUrl    String
+  fileType   String
+  status     DocumentStatus @default(Uploaded)
+  category   String?
+  uploadedById String
+  uploadedBy User          @relation("UploadedBy", fields: [uploadedById], references: [id], onDelete: Cascade)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  analysis   DocumentAnalysis?
+  activityLogs ActivityLog[]
+}
+
+model DocumentAnalysis {
+  id              String   @id @default(cuid())
+  documentId      String   @unique
+  document        Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  summary         String?
+  keyInsights     String?
+  suggestedAction String?
+  confidenceScore Float?
+  createdAt       DateTime @default(now())
+}
+
+model WorkflowRule {
+  id             String   @id @default(cuid())
+  name           String
+  triggerType    String
+  conditionValue String
+  actionType     String
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  documentId String?
+  document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  details    String?
+  createdAt  DateTime @default(now())
+}
