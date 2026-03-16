@@ -1,5 +1,4 @@
 import "dotenv/config";
-import pg from "pg";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -14,11 +13,10 @@ if (url.includes("rlwy.net")) {
 // Hapus sslmode dari URL supaya opsi ssl di bawah yang dipakai
 const connectionString = url.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?&/, "?").replace(/\?$/, "");
 
-const pool = new pg.Pool({
+const adapter = new PrismaPg({
   connectionString,
   ssl: url.includes("rlwy.net") ? { rejectUnauthorized: false } : undefined,
 });
-const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 const DUMMY_DOCUMENTS = [
@@ -108,5 +106,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end();
   });
