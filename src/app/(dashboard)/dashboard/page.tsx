@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireDbUserByClerkId } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,13 +10,15 @@ import { FileText, AlertTriangle, TrendingUp } from "lucide-react";
 export default async function DashboardPage() {
   const { userId } = await auth();
   if (!userId) return null;
+  const dbUser = await requireDbUserByClerkId(userId);
 
   const [totalDocs, processed, flagged, recent] = await Promise.all([
-    prisma.document.count(),
-    prisma.document.count({ where: { status: "Analyzed" } }),
-    prisma.document.count({ where: { status: "Flagged" } }),
+    prisma.document.count({ where: { uploadedById: dbUser.id } }),
+    prisma.document.count({ where: { uploadedById: dbUser.id, status: "Analyzed" } }),
+    prisma.document.count({ where: { uploadedById: dbUser.id, status: "Flagged" } }),
     prisma.document.findMany({
       take: 5,
+      where: { uploadedById: dbUser.id },
       orderBy: { createdAt: "desc" },
       include: { uploadedBy: { select: { name: true } } },
     }),
@@ -24,7 +27,7 @@ export default async function DashboardPage() {
   const byCategory = await prisma.document.groupBy({
     by: ["category"],
     _count: true,
-    where: { category: { not: null } },
+    where: { uploadedById: dbUser.id, category: { not: null } },
   });
 
   return (

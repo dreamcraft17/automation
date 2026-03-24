@@ -1,18 +1,25 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DocumentAnalyzingScreen } from "@/components/documents/analyzing-screen";
+import { requireDbUserByClerkId } from "@/lib/auth";
+import { DeleteDocumentButton } from "@/components/documents/delete-document-button";
 
 export default async function DocumentDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const { userId } = await auth();
+  if (!userId) notFound();
+  const dbUser = await requireDbUserByClerkId(userId);
+
   const { id } = await params;
-  const doc = await prisma.document.findUnique({
-    where: { id },
+  const doc = await prisma.document.findFirst({
+    where: { id, uploadedById: dbUser.id },
     include: {
       uploadedBy: { select: { name: true, email: true } },
       analysis: true,
@@ -61,6 +68,9 @@ export default async function DocumentDetailPage({
         >
           {doc.status}
         </Badge>
+      </div>
+      <div className="mb-6">
+        <DeleteDocumentButton documentId={doc.id} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

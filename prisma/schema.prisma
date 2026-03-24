@@ -50,6 +50,9 @@ model Document {
 
   analysis   DocumentAnalysis?
   activityLogs ActivityLog[]
+
+  @@index([uploadedById, createdAt])
+  @@index([status, createdAt])
 }
 
 model DocumentAnalysis {
@@ -82,4 +85,7 @@ model ActivityLog {
   action     String
   details    String?
   createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([documentId, createdAt])
 }

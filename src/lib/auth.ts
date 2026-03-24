@@ -25,3 +25,11 @@ export async function getUserByClerkId(clerkId: string) {
 export async function getUserById(id: string) {
   return prisma.user.findUnique({ where: { id } });
 }
+
+export async function requireDbUserByClerkId(clerkId: string) {
+  const user = await getUserByClerkId(clerkId);
+  if (!user) {
+    throw new Error("User not found in database.");
+  }
+  return user;
+}

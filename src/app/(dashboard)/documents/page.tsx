@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 import type { DocumentStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { requireDbUserByClerkId } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,12 +22,17 @@ export default async function DocumentsPage({
 }: {
   searchParams: Promise<{ q?: string; category?: string; status?: string }>;
 }) {
+  const { userId } = await auth();
+  if (!userId) return null;
+  const dbUser = await requireDbUserByClerkId(userId);
+
   const params = await searchParams;
   const q = params.q ?? "";
   const category = params.category ?? "";
   const status = params.status ?? "";
 
   const where = {
+    uploadedById: dbUser.id,
     ...(q && {
       OR: [
         { title: { contains: q, mode: "insensitive" as const } },
@@ -44,7 +51,7 @@ export default async function DocumentsPage({
 
   const categories = await prisma.document.findMany({
     select: { category: true },
-    where: { category: { not: null } },
+    where: { uploadedById: dbUser.id, category: { not: null } },
     distinct: ["category"],
   });
 
