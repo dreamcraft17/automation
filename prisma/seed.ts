@@ -5,17 +5,25 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error("DATABASE_URL is required. Set it in .env");
 
+const isRailway = url.includes("rlwy.net");
+
 // Railway (self-signed cert): biarkan TLS terima cert (hanya untuk seed)
-if (url.includes("rlwy.net")) {
+if (isRailway) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
-// Hapus sslmode dari URL supaya opsi ssl di bawah yang dipakai
-const connectionString = url.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?&/, "?").replace(/\?$/, "");
+// Untuk non-Railway (mis. cPanel) jangan diubah; Prisma/driver perlu sslmode sesuai URL.
+// Untuk Railway, kita drop sslmode supaya `ssl` option di adapter yang dipakai.
+const connectionString = isRailway
+  ? url
+      .replace(/[?&]sslmode=[^&]*/g, "")
+      .replace(/\?&/, "?")
+      .replace(/\?$/, "")
+  : url;
 
 const adapter = new PrismaPg({
   connectionString,
-  ssl: url.includes("rlwy.net") ? { rejectUnauthorized: false } : undefined,
+  ssl: isRailway ? { rejectUnauthorized: false } : undefined,
 });
 const prisma = new PrismaClient({ adapter });
 
