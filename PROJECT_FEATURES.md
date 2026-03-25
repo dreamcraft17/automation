@@ -33,6 +33,10 @@ DocuFlow AI adalah platform **AI Document Operations** untuk membantu tim operas
   - Document Category
   - Suggested Action
   - Confidence Score
+- Output evaluasi (decision engine):
+  - Verdict: Safe / ActionRequired
+  - Reason
+  - Priority: Low / Medium / High
 - Integrasi menggunakan Gemini API (dengan fallback handling saat quota/rate limit).
 
 ### 4. Document Management
@@ -61,7 +65,7 @@ DocuFlow AI adalah platform **AI Document Operations** untuk membantu tim operas
 
 - Total Documents
 - Documents Processed
-- Flagged Documents
+- ActionRequired Documents
 - Documents by Category
 - Recent Activity
 
@@ -69,7 +73,7 @@ DocuFlow AI adalah platform **AI Document Operations** untuk membantu tim operas
 
 Dokumen bergerak melalui status berikut:
 
-`Uploaded -> Processing -> Analyzed -> (InReview/Flagged) -> Archived`
+`Uploaded -> Processing -> Analyzed -> Evaluated -> (Safe/ActionRequired) -> Archived`
 
 ## Stack Teknologi
 

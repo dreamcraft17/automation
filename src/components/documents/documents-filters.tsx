@@ -11,8 +11,9 @@ const STATUSES = [
   "Uploaded",
   "Processing",
   "Analyzed",
-  "InReview",
-  "Flagged",
+  "Evaluated",
+  "ActionRequired",
+  "Safe",
   "Archived",
 ] as const;
 

@@ -19,9 +19,16 @@ enum DocumentStatus {
   Uploaded
   Processing
   Analyzed
-  InReview
-  Flagged
+  Evaluated
+  ActionRequired
+  Safe
   Archived
+}
+
+enum PriorityLevel {
+  Low
+  Medium
+  High
 }
 
 model User {
@@ -63,6 +70,8 @@ model DocumentAnalysis {
   keyInsights     String?
   suggestedAction String?
   confidenceScore Float?
+  decisionReason  String?
+  priority        PriorityLevel?
   createdAt       DateTime @default(now())
 }
 

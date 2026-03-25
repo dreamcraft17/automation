@@ -114,9 +114,9 @@ export default async function DocumentsPage({
                   <TableCell>
                     <Badge
                       variant={
-                        doc.status === "Flagged"
+                        doc.status === "ActionRequired"
                           ? "destructive"
-                          : doc.status === "Analyzed"
+                          : doc.status === "Safe"
                             ? "success"
                             : "secondary"
                       }

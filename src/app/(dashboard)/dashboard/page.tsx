@@ -12,10 +12,17 @@ export default async function DashboardPage() {
   if (!userId) return null;
   const dbUser = await requireDbUserByClerkId(userId);
 
-  const [totalDocs, processed, flagged, recent] = await Promise.all([
+  const [totalDocs, processed, needsAttention, recent] = await Promise.all([
     prisma.document.count({ where: { uploadedById: dbUser.id } }),
-    prisma.document.count({ where: { uploadedById: dbUser.id, status: "Analyzed" } }),
-    prisma.document.count({ where: { uploadedById: dbUser.id, status: "Flagged" } }),
+    prisma.document.count({
+      where: {
+        uploadedById: dbUser.id,
+        status: { in: ["Safe", "ActionRequired", "Archived"] },
+      },
+    }),
+    prisma.document.count({
+      where: { uploadedById: dbUser.id, status: "ActionRequired" },
+    }),
     prisma.document.findMany({
       take: 5,
       where: { uploadedById: dbUser.id },
@@ -67,12 +74,12 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
-              Flagged
+              Needs attention
             </CardTitle>
             <AlertTriangle className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{flagged}</p>
+            <p className="text-2xl font-bold">{needsAttention}</p>
           </CardContent>
         </Card>
         <Card>

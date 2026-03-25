@@ -34,7 +34,11 @@ export default async function DocumentDetailPage({
   if (!doc) notFound();
 
   const isAnalyzing =
-    doc.status === "Processing" || (doc.status === "Uploaded" && !doc.analysis);
+    doc.status === "Uploaded" ||
+    doc.status === "Processing" ||
+    doc.status === "Analyzed" ||
+    doc.status === "Evaluated" ||
+    (!doc.analysis && doc.status !== "Archived");
   if (isAnalyzing) {
     return (
       <div className="p-6 md:p-8">
@@ -59,9 +63,9 @@ export default async function DocumentDetailPage({
         </div>
         <Badge
           variant={
-            doc.status === "Flagged"
+            doc.status === "ActionRequired"
               ? "destructive"
-              : doc.status === "Analyzed"
+              : doc.status === "Safe"
                 ? "success"
                 : "secondary"
           }

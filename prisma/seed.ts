@@ -55,7 +55,7 @@ async function main() {
         title,
         fileUrl: "https://example.com/doc.pdf",
         fileType: "application/pdf",
-        status: "Analyzed",
+        status: "Safe",
         category,
         uploadedById: user.id,
       },
@@ -67,6 +67,8 @@ async function main() {
         keyInsights: "- Key point 1\n- Key point 2",
         suggestedAction: "Review and approve.",
         confidenceScore: 0.92,
+        decisionReason: "No issues detected in this demo document.",
+        priority: "Low",
       },
     });
     await prisma.activityLog.create({
@@ -81,22 +83,22 @@ async function main() {
 
   const rules = [
     {
-      name: "Proposal → Review",
+      name: "ActionRequired → Needs Attention",
+      triggerType: "DocumentEvaluated",
+      conditionValue: "status = ActionRequired",
+      actionType: "Add to Needs Attention",
+    },
+    {
+      name: "High priority alert",
+      triggerType: "DocumentEvaluated",
+      conditionValue: "priority = High",
+      actionType: "Highlight in Dashboard",
+    },
+    {
+      name: "Proposal route",
       triggerType: "DocumentAnalyzed",
       conditionValue: "category = Proposal",
-      actionType: "Queue for Review",
-    },
-    {
-      name: "Keyword flag",
-      triggerType: "DocumentAnalyzed",
-      conditionValue: "keyword detected",
-      actionType: "Flagged",
-    },
-    {
-      name: "Incomplete → Revision",
-      triggerType: "DocumentAnalyzed",
-      conditionValue: "document incomplete",
-      actionType: "Needs Revision",
+      actionType: "Suggest Review",
     },
   ];
 
