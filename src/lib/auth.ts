@@ -28,8 +28,16 @@ export async function getUserById(id: string) {
 
 export async function requireDbUserByClerkId(clerkId: string) {
   const user = await getUserByClerkId(clerkId);
-  if (!user) {
-    throw new Error("User not found in database.");
-  }
-  return user;
+  if (user) return user;
+
+  // Fallback: saat user belum tersync (mis. karena perbedaan timing/layout),
+  // buat record minimal agar halaman tetap jalan.
+  return prisma.user.create({
+    data: {
+      clerkId,
+      email: `${clerkId}@placeholder.local`,
+      name: "User",
+      role: "Analyst",
+    },
+  });
 }
