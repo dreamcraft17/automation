@@ -27,7 +27,7 @@ export function Sidebar() {
     <aside className="flex w-56 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
       <div className="flex h-14 items-center border-b border-slate-200 px-4 dark:border-slate-800">
         <Link href="/dashboard" className="font-semibold text-slate-900 dark:text-slate-50">
-          InsightFlow
+          DocuFlow AI
         </Link>
       </div>
       <nav className="flex-1 space-y-0.5 p-2">

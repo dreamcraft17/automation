@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InsightFlow — AI Document Operations",
+  title: "DocuFlow AI — AI Document Operations",
   description:
     "AI-powered document operations platform for automating document review, classification, search, and workflow routing in enterprise teams.",
 };

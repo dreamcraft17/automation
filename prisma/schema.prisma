@@ -1,4 +1,4 @@
-// InsightFlow - AI Document Operations Platform
+// DocuFlow AI - AI Document Operations Platform
 // https://pris.ly/d/prisma-schema
 
 generator client {

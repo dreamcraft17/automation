@@ -13,7 +13,7 @@ export default async function LandingPage() {
       <header className="border-b border-slate-200 dark:border-slate-800">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <span className="text-xl font-semibold text-slate-900 dark:text-slate-50">
-            InsightFlow
+            DocuFlow AI
           </span>
           <div className="flex items-center gap-4">
             <Link href="/sign-in">

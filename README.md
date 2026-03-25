@@ -1,8 +1,8 @@
-# InsightFlow — AI Document Operations Platform
+# DocuFlow AI — AI Document Operations Platform
 
-Platform berbasis AI untuk membantu tim operasional memproses dokumen secara lebih cepat dan terstruktur: upload, ringkasan otomatis, klasifikasi, pencarian, dan workflow automation.
+DocuFlow AI adalah platform berbasis AI untuk membantu tim operasional memproses dokumen secara lebih cepat dan terstruktur: upload, ringkasan otomatis, klasifikasi, pencarian, dan workflow automation.
 
-**Stack:** Next.js 16, TypeScript, Tailwind CSS, Prisma 7 (PostgreSQL), Clerk, UploadThing, OpenAI, shadcn-style UI.
+**Stack:** Next.js 16, TypeScript, Tailwind CSS, Prisma 7 (PostgreSQL), Clerk, UploadThing, Gemini API, shadcn-style UI.
 
 ---
 
@@ -20,8 +20,8 @@ Isi `.env`:
   - **Railway:** buat project → New → Database → PostgreSQL → di tab Variables copy **Postgres Connection URL** (bentuk `postgresql://...`).  
   Contoh: `postgresql://user:pass@host:5432/db?sslmode=require`
 - **NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY** & **CLERK_SECRET_KEY** — dari [Clerk Dashboard](https://dashboard.clerk.com)
-- **UPLOADTHING_SECRET** & **UPLOADTHING_APP_ID** — dari [UploadThing](https://uploadthing.com)
-- **OPENAI_API_KEY** — untuk ringkasan & klasifikasi (opsional; tanpa ini dipakai placeholder)
+- **UPLOADTHING_TOKEN** — dari [UploadThing](https://uploadthing.com) (API Keys → V7 Token)
+- **GEMINI_API_KEY** — untuk ringkasan & klasifikasi (opsional; tanpa ini dipakai placeholder)
 
 ### 2. Database
 
