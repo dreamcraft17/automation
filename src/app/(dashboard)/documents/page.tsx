@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageHeader } from "@/components/layout/page-header";
 import { UploadButton } from "@/components/documents/upload-button";
 import { DocumentsFilters } from "@/components/documents/documents-filters";
 
@@ -57,19 +58,14 @@ export default async function DocumentsPage({
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-            Documents
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Search, filter, and manage documents
-          </p>
-        </div>
+      <PageHeader
+        title="Documents"
+        description="Search, filter, and manage documents"
+      >
         <UploadButton />
-      </div>
+      </PageHeader>
 
-      <Card>
+      <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle>All documents</CardTitle>

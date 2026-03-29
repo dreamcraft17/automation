@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { getUserByClerkId } from "@/lib/auth";
+import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -14,16 +15,9 @@ export default async function SettingsPage() {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-          Settings
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          Your profile and role
-        </p>
-      </div>
+      <PageHeader title="Settings" description="Your profile and role" />
 
-      <Card>
+      <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
         <CardHeader>
           <CardTitle>User info</CardTitle>
         </CardHeader>

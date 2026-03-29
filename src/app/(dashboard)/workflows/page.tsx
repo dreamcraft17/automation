@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -9,16 +10,12 @@ export default async function WorkflowsPage() {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-          Workflows
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          Automation rules: trigger, condition, action
-        </p>
-      </div>
+      <PageHeader
+        title="Workflows"
+        description="Automation rules: trigger, condition, action"
+      />
 
-      <Card>
+      <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
         <CardHeader>
           <CardTitle>Rules</CardTitle>
         </CardHeader>

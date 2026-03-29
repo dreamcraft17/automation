@@ -49,19 +49,23 @@ export default async function DocumentDetailPage({
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            DocuFlow AI
+          </p>
           <Link
             href="/documents"
-            className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-400"
+            className="mt-1 inline-flex text-sm font-medium text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
           >
-            ← Documents
+            ← Back to documents
           </Link>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-50">
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
             {doc.title}
           </h1>
         </div>
         <Badge
+          className="shrink-0 self-start sm:self-center"
           variant={
             doc.status === "ActionRequired"
               ? "destructive"
@@ -78,7 +82,7 @@ export default async function DocumentDetailPage({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
+        <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
           <CardHeader>
             <CardTitle>Document info</CardTitle>
           </CardHeader>
@@ -113,7 +117,7 @@ export default async function DocumentDetailPage({
 
         {doc.analysis && (
           <>
-            <Card className="lg:col-span-2">
+            <Card className="border-slate-200/90 shadow-sm dark:border-slate-800 lg:col-span-2">
               <CardHeader>
                 <CardTitle>AI Summary</CardTitle>
               </CardHeader>
@@ -123,7 +127,7 @@ export default async function DocumentDetailPage({
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
               <CardHeader>
                 <CardTitle>Key insights</CardTitle>
               </CardHeader>
@@ -133,7 +137,7 @@ export default async function DocumentDetailPage({
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
               <CardHeader>
                 <CardTitle>Classification &amp; action</CardTitle>
               </CardHeader>
@@ -154,7 +158,7 @@ export default async function DocumentDetailPage({
         )}
       </div>
 
-      <Card className="mt-6">
+      <Card className="mt-6 border-slate-200/90 shadow-sm dark:border-slate-800">
         <CardHeader>
           <CardTitle>Timeline / Activity</CardTitle>
         </CardHeader>

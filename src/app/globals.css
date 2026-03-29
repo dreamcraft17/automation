@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #0f172a;
+  --accent: #4f46e5;
+  --accent-muted: #818cf8;
+  --surface: #ffffff;
+  --ring-focus: rgba(79, 70, 229, 0.35);
 }
 
 @theme inline {
@@ -14,8 +18,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
+    --background: #0c1222;
     --foreground: #f1f5f9;
+    --accent: #818cf8;
+    --accent-muted: #a5b4fc;
+    --surface: #111827;
+    --ring-focus: rgba(129, 140, 248, 0.35);
   }
 }
 
@@ -23,4 +31,31 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Landing & dashboard decorative layers */
+.mesh-gradient {
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.18) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.12) 0px, transparent 45%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 45%);
+}
+
+.dashboard-canvas {
+  background-color: rgb(248 250 252);
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(99, 102, 241, 0.12),
+    transparent
+  );
+}
+
+.dark .dashboard-canvas {
+  background-color: rgb(15 23 42);
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(99, 102, 241, 0.15),
+    transparent
+  );
 }

@@ -2,10 +2,11 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireDbUserByClerkId } from "@/lib/auth";
+import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, AlertTriangle, TrendingUp } from "lucide-react";
+import { FileText, AlertTriangle, TrendingUp, Layers } from "lucide-react";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -39,89 +40,102 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-          Dashboard
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          Overview of documents and activity
-        </p>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        description="Overview of documents and activity"
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="overflow-hidden border-slate-200/90 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Total Documents
             </CardTitle>
-            <FileText className="h-4 w-4 text-slate-500" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
+              <FileText className="h-4 w-4" />
+            </span>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{totalDocs}</p>
+            <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              {totalDocs}
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="overflow-hidden border-slate-200/90 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Processed
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-slate-500" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+              <TrendingUp className="h-4 w-4" />
+            </span>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{processed}</p>
+            <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              {processed}
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="overflow-hidden border-slate-200/90 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Needs attention
             </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-slate-500" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
+              <AlertTriangle className="h-4 w-4" />
+            </span>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{needsAttention}</p>
+            <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              {needsAttention}
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="overflow-hidden border-slate-200/90 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
               By Category
             </CardTitle>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-400">
+              <Layers className="h-4 w-4" />
+            </span>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{byCategory.length}</p>
+            <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              {byCategory.length}
+            </p>
             <p className="text-xs text-slate-500">categories</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <Card>
+        <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
           <CardHeader>
             <CardTitle>Documents by Category</CardTitle>
-            <CardContent className="pt-4">
-              {byCategory.length === 0 ? (
-                <p className="text-sm text-slate-500">No categories yet</p>
-              ) : (
-                <ul className="space-y-2">
-                  {byCategory.map((c) => (
-                    <li
-                      key={c.category ?? "uncategorized"}
-                      className="flex justify-between text-sm"
-                    >
-                      <span className="text-slate-700 dark:text-slate-300">
-                        {c.category ?? "Uncategorized"}
-                      </span>
-                      <span className="font-medium">{c._count}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
           </CardHeader>
+          <CardContent>
+            {byCategory.length === 0 ? (
+              <p className="text-sm text-slate-500">No categories yet</p>
+            ) : (
+              <ul className="space-y-2">
+                {byCategory.map((c) => (
+                  <li
+                    key={c.category ?? "uncategorized"}
+                    className="flex justify-between rounded-lg border border-slate-100 px-3 py-2 text-sm dark:border-slate-800"
+                  >
+                    <span className="text-slate-700 dark:text-slate-300">
+                      {c.category ?? "Uncategorized"}
+                    </span>
+                    <span className="font-semibold tabular-nums">{c._count}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200/90 shadow-sm dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Recent Activity</CardTitle>
             <Link href="/documents">
