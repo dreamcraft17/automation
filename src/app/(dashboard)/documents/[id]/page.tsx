@@ -51,12 +51,9 @@ export default async function DocumentDetailPage({
     <div className="p-6 md:p-8">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-            DocuFlow AI
-          </p>
           <Link
             href="/documents"
-            className="mt-1 inline-flex text-sm font-medium text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+            className="inline-flex text-sm font-medium text-slate-500 transition-colors hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
           >
             ← Back to documents
           </Link>
